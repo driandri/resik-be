@@ -1,0 +1,74 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  reports   Report[]
+  points    Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Report {
+  id          String       @id @default(uuid())
+  user        User         @relation(fields: [userId], references: [id])
+  userId      String
+  description String
+  imageUrl    String
+  status      ReportStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum ReportStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model Detection {
+  id        String   @id @default(uuid())
+  userId    String
+  category  String
+  imageUrl  String
+  createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id        String   @id @default(uuid())
+  userId    String
+  category  String
+  weightKg  Float
+  points    Int
+  createdAt DateTime @default(now())
+}
+
+model Location {
+  id        String @id @default(uuid())
+  name      String
+  address   String
+  contact   String
+  openHours String
+}
+
+model PickupRequest {
+  id         String   @id @default(uuid())
+  userId     String
+  locationId Int
+  pickupTime DateTime
+  status     String
+}
