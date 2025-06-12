@@ -14,7 +14,7 @@ export class ReportController {
 
 @Post()
 async create(@Req() req: Request, @Body() body: { description: string; imageBase64: string }) {
-  const userId = req.user.sub;
+  const userId = req.user['sub'];
   const imageUrl = await this.uploadService.uploadImage(body.imageBase64);
   return this.reportService.create(userId, {
     description: body.description,
