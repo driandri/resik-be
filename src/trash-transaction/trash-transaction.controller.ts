@@ -17,11 +17,16 @@ import { GetUser } from '../auth/get-user.decorator';
 export class TrashTransactionController {
   constructor(private readonly service: TrashTransactionService) {}
 
-  @Post()
-  @Roles('USER')
-  create(@Body() body: any, @GetUser('id') userId: string) {
-    return this.service.create(userId, body);
-  }
+@Post()
+@Roles('USER')
+create(@Body() body: any, @GetUser('id') userId: string) {
+  return this.service.create(userId, {
+    categoryId: body.categoryId,  // <== gunakan ID kategori
+    weight: body.weight,
+    imageUrl: body.imageUrl,
+  });
+}
+
 
   @Get('me')
   @Roles('USER')

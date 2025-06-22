@@ -36,7 +36,7 @@ model Reward {
   id          String       @id @default(uuid())
   title       String
   description String
-  cost        Int // Poin yang dibutuhkan
+  pointsCost  Int // <- tambahkan ini!
   imageUrl    String
   createdAt   DateTime     @default(now())
   redemptions Redemption[]
@@ -52,16 +52,25 @@ model Redemption {
 }
 
 model TrashTransaction {
-  id         String    @id @default(uuid())
-  user       User      @relation(fields: [userId], references: [id])
+  id         String        @id @default(uuid())
+  user       User          @relation(fields: [userId], references: [id])
   userId     String
-  category   String
+  category   TrashCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
   weight     Float
   imageUrl   String?
-  status     String    @default("PENDING")
+  status     String        @default("PENDING")
   value      Int?
-  createdAt  DateTime  @default(now())
+  createdAt  DateTime      @default(now())
   verifiedAt DateTime?
+}
+
+model TrashCategory {
+  id               String             @id @default(uuid())
+  name             String             @unique
+  iconUrl          String? // bisa digunakan untuk menampilkan ikon
+  createdAt        DateTime           @default(now())
+  TrashTransaction TrashTransaction[]
 }
 
 enum Role {

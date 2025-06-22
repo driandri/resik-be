@@ -18,11 +18,14 @@ import { RewardModule } from './reward/reward.module';
 import { TrashTransactionModule } from './trash-transaction/trash-transaction.module';
 import { ConfigModule } from '@nestjs/config';
 import { RedemptionModule } from './redemption/redemption.module';
+import { TrashCategoryModule } from './trash-category/trash-category.module';
+import { StatModule } from './stat/stat.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    AuthModule, DetectionModule, TransactionsModule, LocationsModule, PickupModule, UserModule, PrismaModule, ReportModule, UploadModule, RewardModule, TrashTransactionModule, RedemptionModule
+    AuthModule, DetectionModule, TransactionsModule, LocationsModule, PickupModule, UserModule, PrismaModule, ReportModule, UploadModule, RewardModule, TrashTransactionModule, RedemptionModule, TrashCategoryModule, StatModule, AiModule
   ],
   controllers: [AppController, RewardController],
   providers: [AppService, PrismaService, UploadService, RewardService],

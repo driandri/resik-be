@@ -6,15 +6,19 @@ import { RewardService } from 'src/reward/reward.service';
 export class TrashTransactionService {
   constructor(private prisma: PrismaService, private rewardService: RewardService) {}
 
-  async create(userId: string, dto: { category: string; weight: number; imageUrl?: string }) {
-    return this.prisma.trashTransaction.create({
-      data: {
-        ...dto,
-        userId,
-        status: 'PENDING',
-      },
-    });
-  }
+async create(userId: string, dto: {
+  categoryId: string;
+  weight: number;
+  imageUrl?: string;
+}) {
+  return this.prisma.trashTransaction.create({
+    data: {
+      ...dto,
+      userId,
+      status: 'PENDING',
+    },
+  });
+}
 
   findAll() {
     return this.prisma.trashTransaction.findMany({
@@ -26,9 +30,11 @@ export class TrashTransactionService {
   findByUser(userId: string) {
     return this.prisma.trashTransaction.findMany({
       where: { userId },
+      include: { category: true },
       orderBy: { createdAt: 'desc' },
     });
   }
+
 
   async verify(id: string, value: number) {
     const tx = await this.prisma.trashTransaction.update({
